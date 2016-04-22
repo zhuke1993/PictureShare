@@ -1,12 +1,29 @@
-*.class
+.idea
+.idea/*
+*.iml
+.project
+.classpath
+.log
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
 *.jar
 *.war
 *.ear
+*.gitignore
+*.prefs
+*.component
+*.class
+.settings
+.settings/*
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+target
+target/*
+bin
+bin/*
+test-output
+test-output/*
+*.cer
+*.pfx
+.metadata/
+Servers/
+out
+out/*
