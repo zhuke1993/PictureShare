@@ -112,6 +112,9 @@ public class PictureShareController {
             responseUtil.setCode(ResponseCodeEnum.SERVER_ERROR.getCode());
             responseUtil.setMsg(ResponseCodeEnum.SERVER_ERROR.getValue());
             e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            responseUtil.setCode(ResponseCodeEnum.SERVER_ERROR.getCode());
+            responseUtil.setMsg("参数错误。");
         }
         responseUtil.write(response);
     }
