@@ -1,6 +1,7 @@
 package com.xm.picture_share.util;
 
 import com.google.gson.Gson;
+import com.xm.picture_share.enums.ResponseCodeEnum;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -9,9 +10,9 @@ public class HTTPResponseUtil {
     private String code;
     private String msg;
 
-    public static HTTPResponseUtil _401Error = new HTTPResponseUtil("401", "登陆失效");
-    public static HTTPResponseUtil _403Error = new HTTPResponseUtil("403", "未登陆");
-    public static HTTPResponseUtil _ServerError = new HTTPResponseUtil("FAILED", "服务器错误");
+    public static HTTPResponseUtil _401Error = new HTTPResponseUtil(ResponseCodeEnum.UNAUTHORIZED.getCode(), ResponseCodeEnum.UNAUTHORIZED.getValue());
+    public static HTTPResponseUtil _403Error = new HTTPResponseUtil(ResponseCodeEnum.FORBIDDEN.getCode(), ResponseCodeEnum.FORBIDDEN.getValue());
+    public static HTTPResponseUtil _ServerError = new HTTPResponseUtil(ResponseCodeEnum.SERVER_ERROR.getCode(), ResponseCodeEnum.SERVER_ERROR.getValue());
 
     public HTTPResponseUtil(String code, String msg) {
         this.code = code;
@@ -50,10 +51,10 @@ public class HTTPResponseUtil {
 
     public HTTPResponseUtil(Object object) {
         if (object instanceof Exception) {
-            this.setCode("FAILED");
-            this.setMsg(((Exception) object).getMessage());
+            this.setCode(ResponseCodeEnum.SERVER_ERROR.getCode());
+            this.setMsg(ResponseCodeEnum.SERVER_ERROR.getValue());
         } else {
-            this.setCode("OK");
+            this.setCode(ResponseCodeEnum.OK.getCode());
             this.setMsg(new Gson().toJson(object));
         }
     }

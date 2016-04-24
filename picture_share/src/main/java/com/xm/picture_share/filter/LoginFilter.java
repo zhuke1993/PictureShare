@@ -1,8 +1,6 @@
 package com.xm.picture_share.filter;
 
 import com.xm.picture_share.entity.UserInfo;
-import com.xm.picture_share.exceptions.LoginTimeOutException;
-import com.xm.picture_share.exceptions.NoPermitionException;
 import com.xm.picture_share.service.UserInfoService;
 import com.xm.picture_share.util.HTTPResponseUtil;
 import org.slf4j.Logger;
@@ -28,58 +26,36 @@ public class LoginFilter implements Filter {
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HTTPResponseUtil HTTPResponseUtil = new HTTPResponseUtil();
-        try {
-            ((HttpServletResponse) response).setHeader("Access-Control-Allow-Origin", "*");
 
-            request.setCharacterEncoding("UTF-8");
-            response.setCharacterEncoding("UTF-8");
+        HTTPResponseUtil responseUtil = new HTTPResponseUtil();
+        ((HttpServletResponse) response).setHeader("Access-Control-Allow-Origin", "*");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("json");
 
-            logger.info("A new http connect, client host:{}, and the request url:{}", request.getRemoteAddr(), ((HttpServletRequest) request).getRequestURL());
+        logger.info("A new http connect, client host:{}, and the request url:{}", request.getRemoteAddr(), ((HttpServletRequest) request).getRequestURL());
 
-            response.setContentType("json");
-
-            String url = ((HttpServletRequest) request).getRequestURL().toString();
-
-            if (url.contains("/login") || url.contains("/register") || url.contains("/validation") || url.contains(".jpg") || url.contains(".css") || url.contains(".js")) {
-                chain.doFilter(request, response);
+        String url = ((HttpServletRequest) request).getRequestURL().toString();
+        if (url.contains("/login") || url.contains("/register") || url.contains("/validation") || url.contains(".jpg") || url.contains(".css") || url.contains(".js")) {
+            chain.doFilter(request, response);
+            return;
+        } else {
+            String token = request.getParameter("accessToken");
+            if (StringUtils.isEmpty(token)) {
+                responseUtil = responseUtil._403Error;
+                responseUtil.write((HttpServletResponse) response);
                 return;
             } else {
-
-                String token = null;
-                token = request.getParameter("accessToken");
-
-                if (StringUtils.isEmpty(token)) {
-                    HTTPResponseUtil = HTTPResponseUtil._403Error;
-                    response.getWriter().print(HTTPResponseUtil.toString());
-                    response.getWriter().flush();
+                UserInfo loginUser = loginUserService.getLoginUser((HttpServletRequest) request);
+                if (loginUser != null) {
+                    chain.doFilter(request, response);
                     return;
                 } else {
-                    UserInfo loginUser = loginUserService.getLoginUser(token);
-                    if (loginUser != null) {
-                        chain.doFilter(request, response);
-                        return;
-                    } else {
-                        HTTPResponseUtil = HTTPResponseUtil._403Error;
-                        response.getWriter().flush();
-                        return;
-                    }
+                    responseUtil = responseUtil._401Error;
+                    responseUtil.write((HttpServletResponse) response);
+                    return;
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (LoginTimeOutException e) {
-            e.printStackTrace();
-            HTTPResponseUtil = HTTPResponseUtil._401Error;
-            response.getWriter().print(HTTPResponseUtil.toString());
-            response.getWriter().flush();
-        } catch (NoPermitionException e) {
-            e.printStackTrace();
-            HTTPResponseUtil = HTTPResponseUtil._403Error;
-            response.getWriter().print(HTTPResponseUtil.toString());
-            response.getWriter().flush();
         }
     }
 

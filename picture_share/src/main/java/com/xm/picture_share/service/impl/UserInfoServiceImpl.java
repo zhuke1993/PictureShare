@@ -1,6 +1,7 @@
 package com.xm.picture_share.service.impl;
 
 
+import com.xm.picture_share.config.LoginUserContainer;
 import com.xm.picture_share.entity.UserInfo;
 import com.xm.picture_share.exceptions.LoginTimeOutException;
 import com.xm.picture_share.service.UserInfoService;
@@ -22,9 +23,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     private HibernateTemplate hibernateTemplate;
-
-    @Autowired
-    private StringRedisTemplate redisTemplate;
 
     public UserInfo getUserInfo(String userName, String password) {
         List<UserInfo> userInfo = (List<UserInfo>) hibernateTemplate.find("from UserInfo u where u.userName = ? and u.password = ? ", userName, password);
@@ -61,38 +59,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         return false;
     }
 
-
-
     public UserInfo getLoginUser(HttpServletRequest request) {
-        String token = null;
-        token = request.getParameter("accessToken");
-        if (StringUtils.isEmpty(redisTemplate.opsForValue().get(token))) {
-            //登陆失效
-            throw new LoginTimeOutException("登陆失效");
+        String token = request.getParameter("accessToken");
+        Long loginUserId = LoginUserContainer.getLoginUser(token);
+        if (loginUserId == null) {
+            return null;
         } else {
-            Long userId = Long.parseLong(redisTemplate.opsForValue().get(token));
-            return hibernateTemplate.get(UserInfo.class, userId);
+            return hibernateTemplate.get(UserInfo.class, loginUserId);
         }
-
-    }
-
-    public UserInfo getLoginUser(String token) {
-        if (StringUtils.isEmpty(redisTemplate.opsForValue().get(token))) {
-            //登陆失效
-            throw new LoginTimeOutException("登陆失效");
-        } else {
-            Long userId = Long.parseLong(redisTemplate.opsForValue().get(token));
-            return hibernateTemplate.get(UserInfo.class, userId);
-        }
-
-    }
-
-    @Transactional
-    public void auditUser(String userName) {
-        UserInfo userInfo = (UserInfo) hibernateTemplate.find("from UserInfo u where u.userName=?", userName).get(0);
-        short isAvailable = 1;
-        userInfo.setIsAvailable(isAvailable);
-        hibernateTemplate.update(userInfo);
     }
 
 }

@@ -25,7 +25,7 @@
             $.ajax({
                 url: "http://zhuke1993.vicp.cc:8080/svmclassifier/login.do",
                 data: {
-                    username: $("#name").val(),
+                    username: $("#code").val(),
                     password: $("#password").val()
                 },
                 success: function (msg) {
@@ -56,14 +56,14 @@
 
         <form method="post" class="am-form">
             <label>用户名:</label>
-            <input type="text" name="" id="name" value="">
+            <input type="text" code="" id="code" value="">
             <br>
             <label for="password">密码:</label>
-            <input type="password" name="" id="password" value="">
+            <input type="password" code="" id="password" value="">
             <br>
             <br/>
             <div class="am-cf">
-                <input onclick="login()" type="button" name="" value="登 录"
+                <input onclick="login()" type="button" code="" value="登 录"
                        class="am-btn am-btn-primary am-btn-sm am-fl">
             </div>
             <span id="error_message" style="color: red"></span>

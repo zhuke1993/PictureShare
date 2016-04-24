@@ -1,6 +1,7 @@
 package com.xm.picture_share.entity;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,24 +10,37 @@ import java.util.Date;
  * 文件信息
  */
 @Entity
-@Table(name = "file_url")
-public class FileURL {
+@Table(name = "picture_file")
+public class PictureFile {
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private Long id;
+
+    @Column(name = "picture_share_id")
+    private Long pictureShareId;
+
     @Column(name = "created_on")
     private Date createdOn;
+
     @Column(name = "modified_on")
     private Date modifiedOn;
+
     @Column(name = "file_name")
     private String fileName;
+
     @Column(name = "file_url")
     private String fileURL;
+
     @Column(name = "file_type")
     private String fileType;
+
     @Column(name = "file_size")
     private double fileSize;
+
+    public PictureFile() {
+        createdOn = new Date();
+    }
 
     public Long getId() {
         return id;
@@ -82,5 +96,13 @@ public class FileURL {
 
     public void setFileSize(double fileSize) {
         this.fileSize = fileSize;
+    }
+
+    public Long getPictureShareId() {
+        return pictureShareId;
+    }
+
+    public void setPictureShareId(Long pictureShareId) {
+        this.pictureShareId = pictureShareId;
     }
 }

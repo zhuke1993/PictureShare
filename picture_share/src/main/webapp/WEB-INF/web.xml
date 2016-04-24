@@ -5,10 +5,10 @@
          version="3.0">
 
 
-    <display-name>图片分享</display-name>
+    <display-code>图片分享</display-code>
     <!--配置spring初始化参数-->
     <context-param>
-        <param-name>contextConfigLocation</param-name>
+        <param-code>contextConfigLocation</param-code>
         <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
     <!--配置Spring启动时的监听器-->
@@ -17,95 +17,95 @@
     </listener>
 
     <servlet-mapping>
-        <servlet-name>default</servlet-name>
+        <servlet-code>default</servlet-code>
         <url-pattern>*.jpg</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>default</servlet-name>
+        <servlet-code>default</servlet-code>
         <url-pattern>*.js</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>default</servlet-name>
+        <servlet-code>default</servlet-code>
         <url-pattern>*.css</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>default</servlet-name>
+        <servlet-code>default</servlet-code>
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>default</servlet-name>
+        <servlet-code>default</servlet-code>
         <url-pattern>*.htm</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>default</servlet-name>
+        <servlet-code>default</servlet-code>
         <url-pattern>*.png</url-pattern>
     </servlet-mapping>
     <!--配置SpringMVC-->
     <servlet>
-        <servlet-name>spring-mvc</servlet-name>
+        <servlet-code>spring-mvc</servlet-code>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
-            <param-name>contextConfigLocation</param-name>
+            <param-code>contextConfigLocation</param-code>
             <param-value>classpath:spring-mvc-servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>spring-mvc</servlet-name>
+        <servlet-code>spring-mvc</servlet-code>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <!--字符过滤器-->
     <filter>
-        <filter-name>encodingFilter</filter-name>
+        <filter-code>encodingFilter</filter-code>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
         <init-param>
-            <param-name>encoding</param-name>
+            <param-code>encoding</param-code>
             <param-value>UTF-8</param-value>
         </init-param>
         <init-param>
-            <param-name>forceEncoding</param-name>
+            <param-code>forceEncoding</param-code>
             <param-value>true</param-value>
         </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>encodingFilter</filter-name>
+        <filter-code>encodingFilter</filter-code>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
     <!--登陆验证
     使用spring的代理，可以配置filter的bean为spring容器中的bean-->
     <filter>
-        <filter-name>loginFilter</filter-name>
+        <filter-code>loginFilter</filter-code>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
         <init-param>
-            <param-name>targetFilterLifecycle</param-name>
+            <param-code>targetFilterLifecycle</param-code>
             <param-value>true</param-value>
         </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>loginFilter</filter-name>
+        <filter-code>loginFilter</filter-code>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
     <!-- 解决Hibernate的延迟加载造成的Session提前关闭问题，设置该项使Session保持Request请求
              完成才关闭Session。      -->
     <filter>
-        <filter-name>opensession</filter-name>
+        <filter-code>opensession</filter-code>
         <filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
         <init-param>
-            <param-name>singleSession</param-name>
+            <param-code>singleSession</param-code>
             <param-value>true</param-value>
         </init-param>
         <init-param>
-            <param-name>flushMode</param-name>
+            <param-code>flushMode</param-code>
             <param-value>AUTO</param-value>
         </init-param>
     </filter>
 
 
     <filter-mapping>
-        <filter-name>opensession</filter-name>
+        <filter-code>opensession</filter-code>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

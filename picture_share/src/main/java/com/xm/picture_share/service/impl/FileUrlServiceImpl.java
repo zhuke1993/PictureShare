@@ -1,6 +1,6 @@
 package com.xm.picture_share.service.impl;
 
-import com.xm.picture_share.entity.FileURL;
+import com.xm.picture_share.entity.PictureFile;
 import com.xm.picture_share.service.FileUrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -13,7 +13,7 @@ public class FileUrlServiceImpl implements FileUrlService {
     private HibernateTemplate hibernateTemplate;
 
     @Transactional
-    public void saveFileUrl(FileURL fileURL) {
+    public void saveFileUrl(PictureFile fileURL) {
         hibernateTemplate.save(fileURL);
     }
 }

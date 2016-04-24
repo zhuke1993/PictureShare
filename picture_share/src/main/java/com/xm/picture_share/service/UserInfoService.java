@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface UserInfoService {
 
-
     UserInfo getUserInfo(String userName, String password);
 
     UserInfo getUserInfo(String userName);
@@ -24,7 +23,4 @@ public interface UserInfoService {
 
     UserInfo getLoginUser(HttpServletRequest request);
 
-    UserInfo getLoginUser(String token);
-
-    void auditUser(String userName);
 }
