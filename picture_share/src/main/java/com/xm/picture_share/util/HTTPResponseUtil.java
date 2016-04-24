@@ -13,6 +13,7 @@ public class HTTPResponseUtil {
     public static HTTPResponseUtil _401Error = new HTTPResponseUtil(ResponseCodeEnum.UNAUTHORIZED.getCode(), ResponseCodeEnum.UNAUTHORIZED.getValue());
     public static HTTPResponseUtil _403Error = new HTTPResponseUtil(ResponseCodeEnum.FORBIDDEN.getCode(), ResponseCodeEnum.FORBIDDEN.getValue());
     public static HTTPResponseUtil _ServerError = new HTTPResponseUtil(ResponseCodeEnum.SERVER_ERROR.getCode(), ResponseCodeEnum.SERVER_ERROR.getValue());
+    public static HTTPResponseUtil _OK = new HTTPResponseUtil(ResponseCodeEnum.OK.getCode(), ResponseCodeEnum.OK.getValue());
 
     public HTTPResponseUtil(String code, String msg) {
         this.code = code;

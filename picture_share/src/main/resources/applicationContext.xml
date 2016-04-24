@@ -16,41 +16,41 @@
 
     <!--配置数据源-->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property code="driverClassName" value="${jdbc.driverClassName}"/>
-        <property code="url" value="${jdbc.url}"/>
-        <property code="username" value="${jdbc.username}"/>
-        <property code="password" value="${jdbc.password}"/>
-        <property code="maxActive" value="${jdbc.maxActive}"/>
-        <property code="maxIdle" value="${jdbc.maxIdle}"/>
-        <property code="maxWait" value="${jdbc.maxWait}"/>
-        <property code="defaultAutoCommit" value="false"/>
-        <property code="validationQuery" value="select 1"/>
-        <property code="testOnBorrow" value="true"/>
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxActive" value="${jdbc.maxActive}"/>
+        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <property name="maxWait" value="${jdbc.maxWait}"/>
+        <property name="defaultAutoCommit" value="false"/>
+        <property name="validationQuery" value="select 1"/>
+        <property name="testOnBorrow" value="true"/>
     </bean>
 
     <bean id="hibernateDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property code="driverClassName" value="${jdbc.driverClassName}"/>
-        <property code="url" value="${jdbc.url}"/>
-        <property code="username" value="${jdbc.username}"/>
-        <property code="password" value="${jdbc.password}"/>
-        <property code="maxActive" value="${jdbc.maxActive}"/>
-        <property code="maxIdle" value="${jdbc.maxIdle}"/>
-        <property code="maxWait" value="${jdbc.maxWait}"/>
-        <property code="defaultAutoCommit" value="false"/>
-        <property code="validationQuery" value="select 1"/>
-        <property code="testOnBorrow" value="true"/>
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxActive" value="${jdbc.maxActive}"/>
+        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <property name="maxWait" value="${jdbc.maxWait}"/>
+        <property name="defaultAutoCommit" value="false"/>
+        <property name="validationQuery" value="select 1"/>
+        <property name="testOnBorrow" value="true"/>
     </bean>
 
 
     <!--配置SpringJDBC-->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property code="dataSource" ref="dataSource"/>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <!--配置hibernate-->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property code="dataSource" ref="dataSource"/>
-        <property code="hibernateProperties">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
             <props>
                 <!-- web项目启动时是否更新表结构 -->
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
@@ -63,7 +63,7 @@
             </props>
         </property>
         <!--自动扫描注解方式配置的hibernate类文件-->
-        <property code="packagesToScan">
+        <property name="packagesToScan">
             <list>
                 <value>com.xm.picture_share.entity</value>
             </list>
@@ -72,12 +72,12 @@
 
     <!--配置hibernateTemplate，用于完成数据操作-->
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
-        <property code="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <!--配置hibernate事务管理器-->
     <bean id="hibernateTransactionMananger" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property code="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <!--对标注@Transaction注解的bean进行事务管理-->
@@ -85,20 +85,20 @@
 
     <!--配置redis-->
     <!--<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property code="maxTotal" value="${redis.maxTotal}"/>
-        <property code="maxIdle" value="${redis.maxIdle}"/>
-        <property code="minIdle" value="${redis.minIdle}"/>
+        <property name="maxTotal" value="${redis.maxTotal}"/>
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="minIdle" value="${redis.minIdle}"/>
     </bean>
 
 
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property code="poolConfig" ref="jedisPoolConfig"/>
-        <property code="hostName" value="${redis.host}"/>
-        <property code="port" value="${redis.port}"/>
-        <property code="password" value="${redis.password}"/>
+        <property name="poolConfig" ref="jedisPoolConfig"/>
+        <property name="hostName" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="password" value="${redis.password}"/>
     </bean>
     <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
-        <property code="connectionFactory" ref="jedisConnectionFactory"/>
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
     </bean>
 -->
 

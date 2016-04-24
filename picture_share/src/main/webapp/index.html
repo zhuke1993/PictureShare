@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="assets/css/admin.css">
     <script type="text/javascript">
 
-        if (sessionStorage.getItem("userId") == null || sessionStorage.getItem("userId") == "") {
+        if (sessionStorage.getItem("commentUserId") == null || sessionStorage.getItem("commentUserId") == "") {
             window.location.href = "login.html";
         }
 
@@ -26,7 +26,7 @@
                 type: 'post',
                 dataType: 'text',
                 data: {
-                    userId: window.sessionStorage.getItem("userId")
+                    commentUserId: window.sessionStorage.getItem("commentUserId")
                 },
                 success: function (data) {
                     alert(data);
@@ -40,7 +40,7 @@
                 type: 'post',
                 dataType: 'text',
                 data: {
-                    userId: window.sessionStorage.getItem("userId")
+                    commentUserId: window.sessionStorage.getItem("commentUserId")
                 },
                 success: function (data) {
                     alert(data);
@@ -55,7 +55,7 @@
                 dataType: 'text',
                 data: {
                     'lable': lable,
-                    userId: window.sessionStorage.getItem("userId")
+                    commentUserId: window.sessionStorage.getItem("commentUserId")
                 },
                 success: function (data) {
                     alert(data);
@@ -82,7 +82,7 @@
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
                     <span class="am-icon-users"></span>管理员：
-                    <script>document.write(sessionStorage.getItem("userId"))</script>
+                    <script>document.write(sessionStorage.getItem("commentUserId"))</script>
                     <span class="am-icon-caret-down"></span>
                 </a>
                 <ul class="am-dropdown-content">

@@ -1,11 +1,13 @@
 package com.xm.picture_share.enums;
 
-/**
- * 用户权限
- */
-public enum GrantedAuthorityEnum {
-    NORMAL("normal_user"),
-    ADMIN("administrator");
+public enum AuthTypeEnum {
+    NO_AUTH("no_auth"),
+    ADMIN_AUTH("admin_auth"),
+    NORMAL_AUTH("normal_auth");
+
+    AuthTypeEnum(String value) {
+        this.value = value;
+    }
 
     private String value;
 
@@ -14,10 +16,6 @@ public enum GrantedAuthorityEnum {
     }
 
     public void setValue(String value) {
-        this.value = value;
-    }
-
-    GrantedAuthorityEnum(String value) {
         this.value = value;
     }
 }

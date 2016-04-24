@@ -10,7 +10,7 @@
     <script type="text/javascript" src="js/modernizr.custom.53451.js"></script>
     <script>
 
-        if (sessionStorage.getItem("userId") == null || sessionStorage.getItem("userId") == "") {
+        if (sessionStorage.getItem("commentUserId") == null || sessionStorage.getItem("commentUserId") == "") {
             window.location.href = "login.html";
         }
 
@@ -41,7 +41,7 @@
                 type: 'post',
                 dataType: 'text',
                 data: {
-                    userId: window.sessionStorage.getItem("userId")
+                    commentUserId: window.sessionStorage.getItem("commentUserId")
                 },
                 success: function (data) {
                     //alert(data);

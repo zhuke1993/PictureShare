@@ -25,11 +25,22 @@ public class Comment {
     @Column(name = "picture_share_id")
     private Long pictureShareId;
 
+    @Column(name = "comment_use_id")
+    private Long commentUserId;
+
     @Column(name = "created_on")
     private Date createdOn;
 
     @Column(name = "modified_on")
     private Date modifiedOn;
+
+    public Long getCommentUserId() {
+        return commentUserId;
+    }
+
+    public void setCommentUserId(Long commentUserId) {
+        this.commentUserId = commentUserId;
+    }
 
     public Long getId() {
         return id;

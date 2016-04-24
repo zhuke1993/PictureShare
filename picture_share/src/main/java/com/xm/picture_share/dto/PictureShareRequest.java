@@ -13,6 +13,11 @@ public class PictureShareRequest {
     private PictureShare pictureShare;
     private List<PictureFile> pictureFileList;
 
+    public PictureShareRequest(PictureShare pictureShare, List<PictureFile> pictureFileList) {
+        this.pictureShare = pictureShare;
+        this.pictureFileList = pictureFileList;
+    }
+
     public PictureShare getPictureShare() {
         return pictureShare;
     }

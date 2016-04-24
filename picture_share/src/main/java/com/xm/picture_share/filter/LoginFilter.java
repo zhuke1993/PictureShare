@@ -1,6 +1,9 @@
 package com.xm.picture_share.filter;
 
+import com.xm.picture_share.config.SystemConfig;
 import com.xm.picture_share.entity.UserInfo;
+import com.xm.picture_share.enums.AuthTypeEnum;
+import com.xm.picture_share.enums.GrantedAuthorityEnum;
 import com.xm.picture_share.service.UserInfoService;
 import com.xm.picture_share.util.HTTPResponseUtil;
 import org.slf4j.Logger;
@@ -35,14 +38,15 @@ public class LoginFilter implements Filter {
 
         logger.info("A new http connect, client host:{}, and the request url:{}", request.getRemoteAddr(), ((HttpServletRequest) request).getRequestURL());
 
-        String url = ((HttpServletRequest) request).getRequestURL().toString();
-        if (url.contains("/login") || url.contains("/register") || url.contains("/validation") || url.contains(".jpg") || url.contains(".css") || url.contains(".js")) {
+        String token = request.getParameter("accessToken");
+        AuthTypeEnum authType = getAuthType(((HttpServletRequest) request).getRequestURL().toString());
+
+        if (authType.getValue().equals(AuthTypeEnum.NO_AUTH.getValue())) {
             chain.doFilter(request, response);
             return;
-        } else {
-            String token = request.getParameter("accessToken");
+        } else if (authType.getValue().equals(AuthTypeEnum.NORMAL_AUTH.getValue())) {
             if (StringUtils.isEmpty(token)) {
-                responseUtil = responseUtil._403Error;
+                responseUtil = responseUtil._401Error;
                 responseUtil.write((HttpServletResponse) response);
                 return;
             } else {
@@ -56,11 +60,44 @@ public class LoginFilter implements Filter {
                     return;
                 }
             }
+        } else if (authType.getValue().equals(AuthTypeEnum.ADMIN_AUTH.getValue())) {
+            if (StringUtils.isEmpty(token)) {
+                responseUtil = responseUtil._401Error;
+                responseUtil.write((HttpServletResponse) response);
+                return;
+            } else {
+                UserInfo loginUser = loginUserService.getLoginUser((HttpServletRequest) request);
+                if (loginUser != null) {
+                    chain.doFilter(request, response);
+                    return;
+                } else if (!loginUser.getGrantedAuthority().equals(GrantedAuthorityEnum.ADMIN.getValue())) {
+                    responseUtil = HTTPResponseUtil._403Error;
+                    responseUtil.write((HttpServletResponse) response);
+                    return;
+                } else {
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
         }
     }
 
     public void destroy() {
 
+    }
+
+    public AuthTypeEnum getAuthType(String url) {
+        for (int i = 0; i < SystemConfig.getNoAuthUrl().size(); i++) {
+            if (url.contains(SystemConfig.getNoAuthUrl().get(i))) {
+                return AuthTypeEnum.NO_AUTH;
+            }
+        }
+        for (int i = 0; i < SystemConfig.getAdminUrl().size(); i++) {
+            if (url.contains(SystemConfig.getAdminUrl().get(i))) {
+                return AuthTypeEnum.ADMIN_AUTH;
+            }
+        }
+        return AuthTypeEnum.NORMAL_AUTH;
     }
 
 }
