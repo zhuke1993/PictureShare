@@ -16,8 +16,6 @@ import org.springframework.util.Assert;
 @Service
 public class RegesterLoginServiceImpl implements RegisterLoginService {
 
-
-    
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserInfoService userInfoService;

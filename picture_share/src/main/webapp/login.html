@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>SVM动作分类器-学习模拟系统登陆</title>
+    <title>图片分享-后台管理系统登陆</title>
     <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
     <style>
         .header {
@@ -23,18 +23,18 @@
     <script>
         function login() {
             $.ajax({
-                url: "http://zhuke1993.vicp.cc:8080/svmclassifier/login.do",
+                url: "http://zhuke1993.vicp.cc:8080/pictureshare/login",
                 data: {
                     username: $("#code").val(),
                     password: $("#password").val()
                 },
                 success: function (msg) {
-                    if (msg == 'FAILED') {
-                        errorMessage = "登陆失败";
-                        $("#error_message").html(errorMessage);
+                    if (msg.code == 'OK') {
+                        window.sessionStorage.setItem("accessToken", msg.msg);
+                        window.sessionStorage.setItem("loginUsername", $("#code").val());
+                        window.location.href = 'index.html?accessToken=' + msg.msg;
                     } else {
-                        window.sessionStorage.setItem("commentUserId", msg);
-                        window.location.href = 'index.html';
+                        $("#error_message").html(msg.msg);
                     }
                 }
             });
@@ -44,7 +44,7 @@
 <body>
 <div class="header">
     <div class="am-g">
-        <h1>SVM动作分类器-学习模拟系统登陆</h1>
+        <h1>图片分享-后台管理系统登陆</h1>
     </div>
     <hr/>
 </div>
@@ -69,7 +69,7 @@
             <span id="error_message" style="color: red"></span>
         </form>
         <hr>
-        <p>朱轲@2016 重庆邮电大学, All Rights Reserved.</p>
+        <p>夏梦@2016 重庆邮电大学, All Rights Reserved.</p>
     </div>
 </div>
 </body>

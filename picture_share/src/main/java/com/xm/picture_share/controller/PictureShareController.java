@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -67,17 +68,16 @@ public class PictureShareController {
             if (isLogin) {
                 logger.info("一个新用户登陆成功，username={}", userName);
                 LoginUserContainer.addLoginUser(session.getId(), userInfoService.getUserInfo(userName).getId());
-
+                responseUtil = new HTTPResponseUtil(ResponseCodeEnum.OK.getCode(), session.getId());
             } else {
                 logger.info("一个用户尝试登陆失败，username={}", userName);
-                responseUtil = new HTTPResponseUtil(ResponseCodeEnum.OK.getValue(), "登陆成功");
-                responseUtil.write(response);
+                responseUtil = new HTTPResponseUtil(ResponseCodeEnum.FAILED.getCode(), "登陆失败");
             }
         } catch (Exception e) {
             e.printStackTrace();
             responseUtil = HTTPResponseUtil._ServerError;
-            responseUtil.write(response);
         }
+        responseUtil.write(response);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -133,7 +133,9 @@ public class PictureShareController {
             for (int i = 0; i < pictures.size(); i++) {
                 if (isImagineFileType(pictures.get(i))) {
                     PictureFile pictureFile = new PictureFile();
-                    pictureFile.setFileName(pictureFileNameFactory(loginUser.getId()));
+                    String pictureName = pictureFileNameFactory(loginUser.getId());
+                    pictures.get(i).transferTo(new File(SystemConfig.getUploadFilePath() + "/" + pictureName));
+                    pictureFile.setFileName(pictureName);
                     pictureFile.setFileSize(pictures.get(i).getSize());
                     pictureFile.setFileType(pictures.get(i).getContentType());
                     pictureFile.setFileURL(SystemConfig.getUploadFilePath() + "/" + pictureFile.getFileName());

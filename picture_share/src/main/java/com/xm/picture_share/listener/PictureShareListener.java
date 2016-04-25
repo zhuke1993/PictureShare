@@ -35,7 +35,7 @@ public class PictureShareListener extends ContextLoaderListener {
         if (!file.exists()) {
             file.mkdirs();
         }
-        SystemConfig.setUploadFilePath(properties.get("system.filepath").toString());
+        SystemConfig.setUploadFilePath(this.getClass().getResource("/").getFile() + properties.get("system.filepath").toString());
 
         List<String> noauthurlList = new ArrayList<String>();
         String noauthurl = properties.get("system.noauthurl").toString();
