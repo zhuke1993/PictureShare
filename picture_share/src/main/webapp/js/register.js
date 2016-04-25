@@ -74,7 +74,8 @@ function register() {
         data: {
             email: clientId,
             password: clientSecret,
-            phone: phone
+            phone: phone,
+            grantedAuthority: 'administrator'
         },
         success: function (msg) {
             if (msg.code == 'OK') {

@@ -9,4 +9,8 @@
     <context:component-scan base-package="com.xm.picture_share.controller"/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
+
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
 </beans>

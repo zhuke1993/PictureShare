@@ -123,21 +123,21 @@ public class PictureShareController {
      * 新增一条图片分享消息
      */
     @RequestMapping(value = "/picture_share", method = RequestMethod.POST)
-    public void uploadMessage(HttpServletRequest request, HttpServletResponse response, @RequestParam("pictures") List<MultipartFile> pictures) throws IOException {
+    public void uploadMessage(HttpServletRequest request, HttpServletResponse response, @RequestParam("pictures") MultipartFile[] pictures) throws IOException {
         HTTPResponseUtil responseUtil;
         try {
             UserInfo loginUser = userInfoService.getLoginUser(request);
 
             List<PictureFile> pictureFileList = new ArrayList<PictureFile>();
 
-            for (int i = 0; i < pictures.size(); i++) {
-                if (isImagineFileType(pictures.get(i))) {
+            for (int i = 0; i < pictures.length; i++) {
+                if (isImagineFileType(pictures[i])) {
                     PictureFile pictureFile = new PictureFile();
                     String pictureName = pictureFileNameFactory(loginUser.getId());
-                    pictures.get(i).transferTo(new File(SystemConfig.getUploadFilePath() + "/" + pictureName));
+                    pictures[i].transferTo(new File(SystemConfig.getUploadFilePath() + "/" + pictureName));
                     pictureFile.setFileName(pictureName);
-                    pictureFile.setFileSize(pictures.get(i).getSize());
-                    pictureFile.setFileType(pictures.get(i).getContentType());
+                    pictureFile.setFileSize(pictures[i].getSize());
+                    pictureFile.setFileType(pictures[i].getContentType());
                     pictureFile.setFileURL(SystemConfig.getUploadFilePath() + "/" + pictureFile.getFileName());
                     pictureFileList.add(pictureFile);
                 }
@@ -218,7 +218,7 @@ public class PictureShareController {
         StringBuilder sb = new StringBuilder();
         sb.append(userId);
         sb.append("_");
-        sb.append(new Date());
+        sb.append(new Date().getTime());
         sb.append(".jpg");
         return sb.toString();
     }

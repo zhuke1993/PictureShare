@@ -7,7 +7,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <code>picture_share</code>
+    <name>picture_share</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -140,6 +140,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.21</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
         </dependency>
     </dependencies>
 </project>

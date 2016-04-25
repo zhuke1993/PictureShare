@@ -13,6 +13,16 @@ public class SystemConfig {
 
     private static List<String> ADMIN_URL;
 
+    private static String FILE_URL_PREFIX;
+
+    public static String getFileUrlPrefix() {
+        return FILE_URL_PREFIX;
+    }
+
+    public static void setFileUrlPrefix(String fileUrlPrefix) {
+        FILE_URL_PREFIX = fileUrlPrefix;
+    }
+
     public static List<String> getAdminUrl() {
         return ADMIN_URL;
     }
