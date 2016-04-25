@@ -1,6 +1,5 @@
 package com.xm.picture_share.service.impl;
 
-import com.xm.picture_share.config.LoginUserContainer;
 import com.xm.picture_share.entity.UserInfo;
 import com.xm.picture_share.exceptions.UsernameExistedException;
 import com.xm.picture_share.service.RegisterLoginService;
@@ -17,6 +16,8 @@ import org.springframework.util.Assert;
 @Service
 public class RegesterLoginServiceImpl implements RegisterLoginService {
 
+
+    
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserInfoService userInfoService;
