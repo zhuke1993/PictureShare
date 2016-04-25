@@ -33,7 +33,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     public UserInfo getUserInfo(String userName) {
-        List<UserInfo> userInfo = (List<UserInfo>) hibernateTemplate.find("from UserInfo u where u.userName = ?", userName);
+        List<UserInfo> userInfo = (List<UserInfo>) hibernateTemplate.find("from UserInfo u where u.email = ?", userName);
         if (userInfo.size() > 0) {
             return (UserInfo) userInfo.get(0);
         }

@@ -20,10 +20,11 @@
         }
     </style>
     <script src="assets/js/jquery.min.js"></script>
+    <script src="js/public.js"></script>
     <script>
         function login() {
             $.ajax({
-                url: "http://zhuke1993.vicp.cc:8080/pictureshare/login",
+                url: server_host+"/pictureshare/login",
                 data: {
                     username: $("#code").val(),
                     password: $("#password").val()
@@ -32,7 +33,7 @@
                     if (msg.code == 'OK') {
                         window.sessionStorage.setItem("accessToken", msg.msg);
                         window.sessionStorage.setItem("loginUsername", $("#code").val());
-                        window.location.href = 'index.html?accessToken=' + msg.msg;
+                        window.location.href = 'admin_index.html?accessToken=' + msg.msg;
                     } else {
                         $("#error_message").html(msg.msg);
                     }

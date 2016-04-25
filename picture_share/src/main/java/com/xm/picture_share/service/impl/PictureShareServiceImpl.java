@@ -9,6 +9,7 @@ import com.xm.picture_share.entity.PictureShare;
 import com.xm.picture_share.entity.UserInfo;
 import com.xm.picture_share.service.PictureShareService;
 import com.xm.picture_share.util.DateFormatUtil;
+import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,11 @@ public class PictureShareServiceImpl implements PictureShareService {
 
     public List<PictureShareDetailDto> getDetailList(int pageNo, int pageSize) {
         List<PictureShareDetailDto> list = new ArrayList<PictureShareDetailDto>();
-
-        List<PictureShare> pictureShareList = (List<PictureShare>) hibernateTemplate.find("from PictureShare p limit ?, ?", (pageNo - 1) * pageSize, pageNo * pageSize - 1);
-
+        String hqlString = "from PictureShare p";
+        Query query = hibernateTemplate.getSessionFactory().getCurrentSession().createQuery(hqlString);
+        query.setFirstResult((pageNo - 1) * pageSize);
+        query.setMaxResults(pageSize);
+        List<PictureShare> pictureShareList = query.list();
         for (int i = 0; i < pictureShareList.size(); i++) {
             PictureShareDetailDto pictureShareDetailDto = new PictureShareDetailDto();
             List<String> fileURLList = new ArrayList<String>();
@@ -47,6 +50,9 @@ public class PictureShareServiceImpl implements PictureShareService {
             PictureShare pictureShare = pictureShareList.get(i);
             pictureShareDetailDto.setId(pictureShare.getId());
             pictureShareDetailDto.setRemark(pictureShare.getRemark());
+            pictureShareDetailDto.setCreatedOn(DateFormatUtil.formatDate(pictureShare.getCreatedOn()));
+            pictureShareDetailDto.setUserName(hibernateTemplate.load(UserInfo.class, pictureShare.getUserId()).getUserName());
+            pictureShareDetailDto.setUserId(pictureShare.getUserId());
 
             List<PictureFile> pictureFileList = (List<PictureFile>) hibernateTemplate.find("from PictureFile f where f.pictureShareId = ?", pictureShare.getId());
             for (int j = 0; j < pictureFileList.size(); j++) {
@@ -78,6 +84,9 @@ public class PictureShareServiceImpl implements PictureShareService {
 
         pictureShareDetailDto.setId(pictureShare.getId());
         pictureShareDetailDto.setRemark(pictureShare.getRemark());
+        pictureShareDetailDto.setCreatedOn(DateFormatUtil.formatDate(pictureShare.getCreatedOn()));
+        pictureShareDetailDto.setUserName(hibernateTemplate.get(UserInfo.class, pictureShare.getUserId()).getUserName());
+        pictureShareDetailDto.setUserId(pictureShare.getUserId());
 
         List<PictureFile> pictureFileList = (List<PictureFile>) hibernateTemplate.find("from PictureFile f where f.pictureShareId = ?", pictureShare.getId());
         for (int j = 0; j < pictureFileList.size(); j++) {

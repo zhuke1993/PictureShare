@@ -23,7 +23,7 @@
 <script>
     var accessToken = sessionStorage.getItem('accessToken');
     $("#accessToken").val(accessToken);
-    $("#pictureshareform").attr('action', server_host + "/picture_share?accessToken=" + accessToken);
+    $("#pictureshareform").attr('action', server_host + "/pictureshare/picture_share?accessToken=" + accessToken);
 </script>
 </body>
 </html>

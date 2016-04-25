@@ -4,22 +4,21 @@ import com.xm.picture_share.config.LoginUserContainer;
 import com.xm.picture_share.config.SystemConfig;
 import com.xm.picture_share.dto.PictureShareDetailDto;
 import com.xm.picture_share.dto.PictureShareRequest;
+import com.xm.picture_share.dto.SystemReportDto;
 import com.xm.picture_share.entity.Comment;
 import com.xm.picture_share.entity.PictureFile;
 import com.xm.picture_share.entity.PictureShare;
 import com.xm.picture_share.entity.UserInfo;
 import com.xm.picture_share.enums.ResponseCodeEnum;
 import com.xm.picture_share.exceptions.UsernameExistedException;
-import com.xm.picture_share.service.CommentService;
-import com.xm.picture_share.service.PictureShareService;
-import com.xm.picture_share.service.RegisterLoginService;
-import com.xm.picture_share.service.UserInfoService;
+import com.xm.picture_share.service.*;
 import com.xm.picture_share.util.HTTPResponseUtil;
 import com.xm.picture_share.util.MD5Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -55,6 +54,9 @@ public class PictureShareController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private ReportService reportService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletRequestBindingException, IOException {
@@ -123,8 +125,9 @@ public class PictureShareController {
      * 新增一条图片分享消息
      */
     @RequestMapping(value = "/picture_share", method = RequestMethod.POST)
-    public void uploadMessage(HttpServletRequest request, HttpServletResponse response, @RequestParam("pictures") MultipartFile[] pictures) throws IOException {
+    public String uploadMessage(HttpServletRequest request, HttpServletResponse response, @RequestParam("pictures") MultipartFile[] pictures) throws IOException {
         HTTPResponseUtil responseUtil;
+        response.setCharacterEncoding("UTF-8");
         try {
             UserInfo loginUser = userInfoService.getLoginUser(request);
 
@@ -138,7 +141,7 @@ public class PictureShareController {
                     pictureFile.setFileName(pictureName);
                     pictureFile.setFileSize(pictures[i].getSize());
                     pictureFile.setFileType(pictures[i].getContentType());
-                    pictureFile.setFileURL(SystemConfig.getUploadFilePath() + "/" + pictureFile.getFileName());
+                    pictureFile.setFileURL("/" + pictureFile.getFileName());
                     pictureFileList.add(pictureFile);
                 }
             }
@@ -146,17 +149,21 @@ public class PictureShareController {
             PictureShare pictureShare = new PictureShare();
             pictureShare.setCreatedOn(new Date());
             pictureShare.setRemark(request.getParameter("remark"));
+            pictureShare.setUserId(loginUser.getId());
 
             PictureShareRequest pictureShareRequest = new PictureShareRequest(pictureShare, pictureFileList);
             pictureShareService.addPictureShare(pictureShareRequest);
 
             responseUtil = HTTPResponseUtil._OK;
+            return "success.html";
+            //responseUtil.write(response);
 
         } catch (Exception e) {
             responseUtil = HTTPResponseUtil._ServerError;
             logger.error(e.getMessage());
+            //responseUtil.write(response);
+            return "failed.html";
         }
-        responseUtil.write(response);
     }
 
     @RequestMapping(value = "/comment")
@@ -179,7 +186,7 @@ public class PictureShareController {
             responseUtil = HTTPResponseUtil._OK;
         } catch (Exception e) {
             responseUtil = HTTPResponseUtil._ServerError;
-            logger.error(e.getMessage());
+            logger.error("服务器错误", e);
         }
         responseUtil.write(response);
     }
@@ -188,14 +195,17 @@ public class PictureShareController {
     public void getPictrureShareList(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HTTPResponseUtil responseUtil;
         try {
+            Assert.notNull(request.getParameter("pageNo"));
+            Assert.notNull(request.getParameter("pageSize"));
             int pageNo = Integer.parseInt(request.getParameter("pageNo"));
             int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+
 
             List<PictureShareDetailDto> detailList = pictureShareService.getDetailList(pageNo, pageSize);
             responseUtil = new HTTPResponseUtil(detailList);
         } catch (Exception e) {
             responseUtil = HTTPResponseUtil._ServerError;
-            logger.error(e.getMessage());
+            logger.error("服务器错误", e);
         }
         responseUtil.write(response);
     }
@@ -207,6 +217,19 @@ public class PictureShareController {
             Long pictureShareId = Long.parseLong(request.getParameter("pictureShareId"));
             PictureShareDetailDto detail = pictureShareService.getDetail(pictureShareId);
             responseUtil = new HTTPResponseUtil(detail);
+        } catch (Exception e) {
+            responseUtil = HTTPResponseUtil._ServerError;
+            logger.error(e.getMessage());
+        }
+        responseUtil.write(response);
+    }
+
+    @RequestMapping(value = "/admin/sys_report")
+    public void getSysReport(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HTTPResponseUtil responseUtil;
+        try {
+            SystemReportDto systemReport = reportService.getSystemReport();
+            responseUtil = new HTTPResponseUtil(systemReport);
         } catch (Exception e) {
             responseUtil = HTTPResponseUtil._ServerError;
             logger.error(e.getMessage());

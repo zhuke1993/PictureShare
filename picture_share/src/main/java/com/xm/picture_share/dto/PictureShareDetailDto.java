@@ -6,8 +6,35 @@ import java.util.List;
 public class PictureShareDetailDto {
     private Long id;
     private String remark;
+    private Long userId;
+    private String userName;
+    private String createdOn;
     private List<String> fileURLList;
     private List<CommentDto> commentDtoList;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+    }
 
     public Long getId() {
         return id;

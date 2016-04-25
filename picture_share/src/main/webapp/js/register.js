@@ -8,7 +8,7 @@ function register() {
         username: clientId,
         password: clientSecret
     };
-    var requestUrl = server_host + "/register"; //要访问的api
+    var requestUrl = server_host + "/pictureshare/register"; //要访问的api
 
     var errorMessage = "";
     var alias = '';

@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class HTTPResponseUtil {
     private String code;
-    private String msg;
+    private Object msg;
 
     public static HTTPResponseUtil _401Error = new HTTPResponseUtil(ResponseCodeEnum.UNAUTHORIZED.getCode(), ResponseCodeEnum.UNAUTHORIZED.getValue());
     public static HTTPResponseUtil _403Error = new HTTPResponseUtil(ResponseCodeEnum.FORBIDDEN.getCode(), ResponseCodeEnum.FORBIDDEN.getValue());
@@ -31,11 +31,11 @@ public class HTTPResponseUtil {
         this.code = code;
     }
 
-    public String getMsg() {
+    public Object getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    public void setMsg(Object msg) {
         this.msg = msg;
     }
 
@@ -56,7 +56,7 @@ public class HTTPResponseUtil {
             this.setMsg(ResponseCodeEnum.SERVER_ERROR.getValue());
         } else {
             this.setCode(ResponseCodeEnum.OK.getCode());
-            this.setMsg(new Gson().toJson(object));
+            this.setMsg(object);
         }
     }
 }

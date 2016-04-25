@@ -36,8 +36,6 @@ public class LoginFilter implements Filter {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("json");
 
-        logger.info("A new http connect, client host:{}, and the request url:{}", request.getRemoteAddr(), ((HttpServletRequest) request).getRequestURL());
-
         String token = request.getParameter("accessToken");
         AuthTypeEnum authType = getAuthType(((HttpServletRequest) request).getRequestURL().toString());
 
@@ -52,6 +50,7 @@ public class LoginFilter implements Filter {
             } else {
                 UserInfo loginUser = loginUserService.getLoginUser((HttpServletRequest) request);
                 if (loginUser != null) {
+                    logger.info("A new http connect, client host:{}, and the request url:{}", request.getRemoteAddr(), ((HttpServletRequest) request).getRequestURL());
                     chain.doFilter(request, response);
                     return;
                 } else {
@@ -68,14 +67,18 @@ public class LoginFilter implements Filter {
             } else {
                 UserInfo loginUser = loginUserService.getLoginUser((HttpServletRequest) request);
                 if (loginUser != null) {
-                    chain.doFilter(request, response);
-                    return;
-                } else if (!loginUser.getGrantedAuthority().equals(GrantedAuthorityEnum.ADMIN.getValue())) {
-                    responseUtil = HTTPResponseUtil._403Error;
-                    responseUtil.write((HttpServletResponse) response);
-                    return;
+                    if (!loginUser.getGrantedAuthority().equals(GrantedAuthorityEnum.ADMIN.getValue())) {
+                        responseUtil = HTTPResponseUtil._403Error;
+                        responseUtil.write((HttpServletResponse) response);
+                        return;
+                    } else {
+                        chain.doFilter(request, response);
+                        logger.info("A new http connect, client host:{}, and the request url:{}", request.getRemoteAddr(), ((HttpServletRequest) request).getRequestURL());
+                        return;
+                    }
                 } else {
-                    chain.doFilter(request, response);
+                    responseUtil = responseUtil._401Error;
+                    responseUtil.write((HttpServletResponse) response);
                     return;
                 }
             }
