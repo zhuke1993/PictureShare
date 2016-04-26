@@ -20,6 +20,9 @@ public class PictureFile {
     @Column(name = "picture_share_id")
     private Long pictureShareId;
 
+    @Column
+    private Long userId;
+
     @Column(name = "created_on")
     private Date createdOn;
 
@@ -37,6 +40,14 @@ public class PictureFile {
 
     @Column(name = "file_size")
     private double fileSize;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public PictureFile() {
         createdOn = new Date();

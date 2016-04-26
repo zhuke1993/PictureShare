@@ -5,10 +5,12 @@ import com.xm.picture_share.config.SystemConfig;
 import com.xm.picture_share.dto.PictureShareDetailDto;
 import com.xm.picture_share.dto.PictureShareRequest;
 import com.xm.picture_share.dto.SystemReportDto;
+import com.xm.picture_share.dto.UserInfoDto;
 import com.xm.picture_share.entity.Comment;
 import com.xm.picture_share.entity.PictureFile;
 import com.xm.picture_share.entity.PictureShare;
 import com.xm.picture_share.entity.UserInfo;
+import com.xm.picture_share.enums.GrantedAuthorityEnum;
 import com.xm.picture_share.enums.ResponseCodeEnum;
 import com.xm.picture_share.exceptions.UsernameExistedException;
 import com.xm.picture_share.service.*;
@@ -17,6 +19,7 @@ import com.xm.picture_share.util.MD5Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -57,6 +60,9 @@ public class PictureShareController {
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private HibernateTemplate hibernateTemplate;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletRequestBindingException, IOException {
@@ -142,6 +148,7 @@ public class PictureShareController {
                     pictureFile.setFileSize(pictures[i].getSize());
                     pictureFile.setFileType(pictures[i].getContentType());
                     pictureFile.setFileURL("/" + pictureFile.getFileName());
+                    pictureFile.setUserId(loginUser.getId());
                     pictureFileList.add(pictureFile);
                 }
             }
@@ -236,6 +243,64 @@ public class PictureShareController {
         }
         responseUtil.write(response);
     }
+
+
+    @RequestMapping(value = "/user_info_list")
+    public void getUserInfoList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HTTPResponseUtil responseUtil;
+        try {
+            int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+            int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+            List<UserInfoDto> userinfoDtoList = userInfoService.getUserinfoDtoList(pageNo, pageSize);
+
+            responseUtil = new HTTPResponseUtil(userinfoDtoList);
+        } catch (Exception e) {
+            responseUtil = HTTPResponseUtil._ServerError;
+            logger.error("服务器错误", e);
+        }
+        responseUtil.write(response);
+    }
+
+
+    @RequestMapping(value = "/delete_user")
+    public void deleteUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HTTPResponseUtil responseUtil;
+        try {
+            UserInfo loginUser = userInfoService.getLoginUser(request);
+
+            if (!loginUser.getGrantedAuthority().equals(GrantedAuthorityEnum.ADMIN.getValue())) {
+                responseUtil = HTTPResponseUtil._403Error;
+            } else {
+                userInfoService.deleteUser(Long.parseLong(request.getParameter("userId")));
+                responseUtil = HTTPResponseUtil._OK;
+            }
+        } catch (Exception e) {
+            responseUtil = HTTPResponseUtil._ServerError;
+            logger.error("服务器错误", e);
+        }
+        responseUtil.write(response);
+    }
+
+    @RequestMapping(value = "/delete_Share")
+    public void deleteShare(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HTTPResponseUtil responseUtil;
+        try {
+            UserInfo loginUser = userInfoService.getLoginUser(request);
+            PictureShare pictureShare = hibernateTemplate.get(PictureShare.class, Long.parseLong(request.getParameter("pictureShareId")));
+
+            if (!loginUser.getGrantedAuthority().equals(GrantedAuthorityEnum.ADMIN.getValue()) || pictureShare.getUserId().intValue() != loginUser.getId().intValue()) {
+                responseUtil = HTTPResponseUtil._403Error;
+            } else {
+                pictureShareService.deletePictureShare(pictureShare.getId());
+                responseUtil = HTTPResponseUtil._OK;
+            }
+        } catch (Exception e) {
+            responseUtil = HTTPResponseUtil._ServerError;
+            logger.error("服务器错误", e);
+        }
+        responseUtil.write(response);
+    }
+
 
     private String pictureFileNameFactory(Long userId) {
         StringBuilder sb = new StringBuilder();

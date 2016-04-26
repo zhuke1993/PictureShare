@@ -105,4 +105,20 @@ public class PictureShareServiceImpl implements PictureShareService {
 
         return pictureShareDetailDto;
     }
+
+    @Transactional
+    public void deletePictureShare(Long id) {
+        hibernateTemplate.delete(hibernateTemplate.get(PictureShare.class, id));
+        //删除照片
+        List<PictureShare> list = (List<PictureShare>) hibernateTemplate.find("from PictureFile f where pictureShareId = ?", id);
+        for (int i = 0; i < list.size(); i++) {
+            hibernateTemplate.delete(list.get(i));
+        }
+
+        //删除评论列表
+        List<Comment> list1 = (List<Comment>) hibernateTemplate.find("from Comment c where c.pictureShareId = ?", id);
+        for (int i = 0; i < list1.size(); i++) {
+            hibernateTemplate.delete(list1.get(i));
+        }
+    }
 }

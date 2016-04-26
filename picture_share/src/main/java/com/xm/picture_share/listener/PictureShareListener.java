@@ -9,6 +9,7 @@ import javax.servlet.ServletContextEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -30,7 +31,7 @@ public class PictureShareListener extends ContextLoaderListener {
 
     private void initSystemConfig() throws IOException {
         Properties properties = new Properties();
-        properties.load(new FileInputStream(new File(this.getClass().getResource("/").getFile() + "pictureshare.properties")));
+        properties.load(new FileInputStream(new File(URLDecoder.decode(this.getClass().getResource("/").getFile() + "pictureshare.properties", "UTF-8"))));
         File file = new File(properties.get("system.filepath").toString());
         if (!file.exists()) {
             file.mkdirs();
