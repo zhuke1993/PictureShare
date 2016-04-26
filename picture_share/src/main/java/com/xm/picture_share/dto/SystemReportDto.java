@@ -7,11 +7,22 @@ public class SystemReportDto {
     private int imageNum;
     private int commentNum;
     private int userNum;
+    private int pictureShareNum;
 
-    public SystemReportDto(int imageNum, int commentNum, int userNum) {
+
+    public SystemReportDto(int imageNum, int commentNum, int userNum, int pictureShareNum) {
         this.imageNum = imageNum;
         this.commentNum = commentNum;
         this.userNum = userNum;
+        this.pictureShareNum = pictureShareNum;
+    }
+
+    public int getPictureShareNum() {
+        return pictureShareNum;
+    }
+
+    public void setPictureShareNum(int pictureShareNum) {
+        this.pictureShareNum = pictureShareNum;
     }
 
     public int getImageNum() {

@@ -31,6 +31,13 @@ public class ReportServiceImpl implements ReportService {
             }
         });
 
+        final int[] pictureShareNum = new int[1];
+        jdbcTemplate.query("select count(1) as pictureShareNum from pictureshare f; ", new RowCallbackHandler() {
+            public void processRow(ResultSet resultSet) throws SQLException {
+                pictureShareNum[0] = resultSet.getInt("pictureShareNum");
+            }
+        });
+
         final int[] commentNum = new int[1];
         jdbcTemplate.query("select count(1) as commentNum from comment c;", new RowCallbackHandler() {
             public void processRow(ResultSet resultSet) throws SQLException {
@@ -38,7 +45,7 @@ public class ReportServiceImpl implements ReportService {
             }
         });
 
-        SystemReportDto systemReportDto = new SystemReportDto(imageNum[0], commentNum[0], userNum[0]);
+        SystemReportDto systemReportDto = new SystemReportDto(imageNum[0], commentNum[0], userNum[0], pictureShareNum[0]);
 
         return systemReportDto;
     }

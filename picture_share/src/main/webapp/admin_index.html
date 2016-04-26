@@ -76,6 +76,10 @@
 
             <ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
                 <li><a href="#" class="am-text-warning"><span
+                        class="am-icon-btn am-icon-briefcase"></span><br/>分享数<br/><span
+                        id="totalShare"></span></a>
+                </li>
+                <li><a href="#" class="am-text-warning"><span
                         class="am-icon-btn am-icon-briefcase"></span><br/>图片数<br/><span
                         id="imageNum"></span></a>
                 </li>
@@ -104,6 +108,14 @@
 
                         </tbody>
                     </table>
+                    <div class="am-cf">
+                        共 <span id="total_item"></span> 条记录
+                        <div class="am-fr">
+                            <ul class="am-pagination" id="pageContent">
+
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -145,37 +157,57 @@
                     $("#imageNum").text(json.imageNum);
                     $("#commentNum").text(json.commentNum);
                     $("#userNum").text(json.userNum);
+                    $("#totalShare").text(json.pictureShareNum);
+                    $("#total_item").text(json.pictureShareNum);
+
+                    var totalNum = json.pictureShareNum;
+                    var pageSize = 10;
+                    var N = 0;
+                    if (totalNum % pageSize == 0) {
+                        N = parseInt(totalNum / pageSize);
+                    } else {
+                        N = parseInt(totalNum / pageSize) + 1;
+                    }
+                    //alert(parseInt(N));
+
+                    for (var i = 0; i < N; i++) {
+                        $("#pageContent").append("<li onclick='getPage(" + parseInt(i + 1) + ",10)' class=\"#\"><a href=\"#\">" + parseInt(i + 1) + "</a></li>");
+                    }
                 }
             }
         });
 
-        $.ajax({
-            url: server_host + "/pictureshare/picture_share_list",
-            data: {
-                accessToken: sessionStorage.getItem("accessToken"),
-                pageSize: 100,
-                pageNo: 1
-            },
-            success: function (msg) {
-                if (msg.code == '401' || msg.code == '403') {
-                    alert(msg.msg);
-                    window.location.href = 'login.html';
-                } else if (msg.code == 'OK') {
-                    var json = msg.msg;
-                    $("#content").empty();
-                    $("#content").append("<tbody id=\"content\">");
-                    for (var i = 0; i < json.length; i++) {
-                        $("#content").append("<tr onclick='location.href=\""+"detail.html?pictureShareId="+json[i].id+"\"'>\n" +
-                                "                            <td  style=\"width: 20%\">" + json[i].userName + "</td>\n" +
-                                "                            <td  style=\"width: 20%\">" + json[i].createdOn + "</td>\n" +
-                                "                            <td  style=\"width: 20%\">" + json[i].remark + "</td>\n" +
-                                "                            <td  style=\"width: 20%\">" + json[i].commentDtoList.length + "</td>\n" +
-                                "                        </tr>");
+        getPage(1,10);
+
+        function getPage(pageNo, pageSize) {
+            $.ajax({
+                url: server_host + "/pictureshare/picture_share_list",
+                data: {
+                    accessToken: sessionStorage.getItem("accessToken"),
+                    pageSize: pageSize,
+                    pageNo: pageNo
+                },
+                success: function (msg) {
+                    if (msg.code == '401' || msg.code == '403') {
+                        alert(msg.msg);
+                        window.location.href = 'login.html';
+                    } else if (msg.code == 'OK') {
+                        var json = msg.msg;
+                        $("#content").empty();
+                        $("#content").append("<tbody id=\"content\">");
+                        for (var i = 0; i < json.length; i++) {
+                            $("#content").append("<tr onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"'>\n" +
+                                    "                            <td  style=\"width: 20%\">" + json[i].userName + "</td>\n" +
+                                    "                            <td  style=\"width: 20%\">" + json[i].createdOn + "</td>\n" +
+                                    "                            <td  style=\"width: 20%\">" + json[i].remark + "</td>\n" +
+                                    "                            <td  style=\"width: 20%\">" + json[i].commentDtoList.length + "</td>\n" +
+                                    "                        </tr>");
+                        }
+                        $("#content").append("</tbody>");
                     }
-                    $("#content").append("</tbody>");
                 }
-            }
-        });
+            });
+        }
 
     </script>
 </div>
