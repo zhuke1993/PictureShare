@@ -33,7 +33,7 @@
                     if (msg.code == 'OK') {
                         window.sessionStorage.setItem("accessToken", msg.msg);
                         window.sessionStorage.setItem("loginUsername", $("#code").val());
-                        window.location.href = 'admin_index.html?accessToken=' + msg.msg;
+                        window.location.href = 'admin_index.html';
                     } else {
                         $("#error_message").html(msg.msg);
                     }

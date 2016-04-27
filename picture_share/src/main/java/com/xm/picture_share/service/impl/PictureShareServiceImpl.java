@@ -37,7 +37,7 @@ public class PictureShareServiceImpl implements PictureShareService {
 
     public List<PictureShareDetailDto> getDetailList(int pageNo, int pageSize) {
         List<PictureShareDetailDto> list = new ArrayList<PictureShareDetailDto>();
-        String hqlString = "from PictureShare p";
+        String hqlString = "from PictureShare p order by createdOn desc ";
         Query query = hibernateTemplate.getSessionFactory().getCurrentSession().createQuery(hqlString);
         query.setFirstResult((pageNo - 1) * pageSize);
         query.setMaxResults(pageSize);
@@ -120,5 +120,16 @@ public class PictureShareServiceImpl implements PictureShareService {
         for (int i = 0; i < list1.size(); i++) {
             hibernateTemplate.delete(list1.get(i));
         }
+    }
+
+    public List<PictureShareDetailDto> findPictureShare(String str) {
+        List<PictureShareDetailDto> dtoList = new ArrayList<PictureShareDetailDto>();
+
+        List<PictureShare> list = (List<PictureShare>) hibernateTemplate.find("from PictureShare p where p.remark like '%" + str + "%'", null);
+        for (int i = 0; i < list.size(); i++) {
+            PictureShareDetailDto detail = getDetail(list.get(i).getId());
+            dtoList.add(detail);
+        }
+        return dtoList;
     }
 }

@@ -2,6 +2,7 @@ package com.xm.picture_share.service;
 
 import com.xm.picture_share.dto.PictureShareDetailDto;
 import com.xm.picture_share.dto.PictureShareRequest;
+import com.xm.picture_share.entity.PictureShare;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface PictureShareService {
     PictureShareDetailDto getDetail(Long pictureShareId);
 
     void deletePictureShare(Long id);
+
+    List<PictureShareDetailDto> findPictureShare(String str);
 }

@@ -38,6 +38,7 @@ public class LoginFilter implements Filter {
 
         String token = request.getParameter("accessToken");
         AuthTypeEnum authType = getAuthType(((HttpServletRequest) request).getRequestURL().toString());
+        logger.info("A new http connect, client host:{}, and the request url:{}", request.getRemoteAddr(), ((HttpServletRequest) request).getRequestURL());
 
         if (authType.getValue().equals(AuthTypeEnum.NO_AUTH.getValue())) {
             chain.doFilter(request, response);
@@ -50,7 +51,6 @@ public class LoginFilter implements Filter {
             } else {
                 UserInfo loginUser = loginUserService.getLoginUser((HttpServletRequest) request);
                 if (loginUser != null) {
-                    logger.info("A new http connect, client host:{}, and the request url:{}", request.getRemoteAddr(), ((HttpServletRequest) request).getRequestURL());
                     chain.doFilter(request, response);
                     return;
                 } else {
@@ -73,7 +73,6 @@ public class LoginFilter implements Filter {
                         return;
                     } else {
                         chain.doFilter(request, response);
-                        logger.info("A new http connect, client host:{}, and the request url:{}", request.getRemoteAddr(), ((HttpServletRequest) request).getRequestURL());
                         return;
                     }
                 } else {

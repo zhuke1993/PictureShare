@@ -302,6 +302,22 @@ public class PictureShareController {
     }
 
 
+    @RequestMapping(value = "/search")
+    public void search(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HTTPResponseUtil responseUtil;
+        try {
+            UserInfo loginUser = userInfoService.getLoginUser(request);
+            String condition = URLDecoder.decode(request.getParameter("condition"), "UTF-8");
+            List<PictureShareDetailDto> pictureShareDetailDtos = pictureShareService.findPictureShare(condition);
+            responseUtil = new HTTPResponseUtil(pictureShareDetailDtos);
+        } catch (Exception e) {
+            responseUtil = HTTPResponseUtil._ServerError;
+            logger.error("服务器错误", e);
+        }
+        responseUtil.write(response);
+    }
+
+
     private String pictureFileNameFactory(Long userId) {
         StringBuilder sb = new StringBuilder();
         sb.append(userId);

@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
     <link rel="stylesheet" href="assets/css/admin.css">
     <script src="js/public.js"></script>
+
 </head>
 <body>
 <!--[if lte IE 9]>
@@ -29,7 +30,6 @@
     </div>
 
     <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
-
         <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
@@ -88,8 +88,10 @@
                 <p id="remark"></p>
                 <hr>
                 <h4>图片列表</h4>
-                <ul id="picture_content" class="am-avg-sm-2 am-avg-md-4 am-avg-lg-6 am-margin gallery-list">
+                <ul  class="am-avg-sm-2 am-avg-md-4 am-avg-lg-6 am-margin gallery-list">
+                    <div id="picture_content" class="content homepage" id="menu-1" style="margin-left: 20%; margin-top: 15px">
 
+                    </div>
                 </ul>
                 <hr>
                 <h4>评论列表</h4>
@@ -135,6 +137,15 @@
 <!--<![endif]-->
 <script src="assets/js/amazeui.min.js"></script>
 <script src="assets/js/app.js"></script>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/templatemo_misc.css">
+<link rel="stylesheet" href="css/templatemo_style.css">
+<style type="text/css" adt="123"></style>
+<script src="js/jquery.lightbox.js"></script>
+<script src="js/templatemo_custom.js"></script>
+
 <script>
     var pictureShareId = getURLParameter("pictureShareId");
     $.ajax({
@@ -174,13 +185,18 @@
                     $("#picture_content").append("无");
                 } else {
                     for (var i = 0; i < files.length; i++) {
-                        $("#picture_content").append(" <li>\n" +
-                                "                    <a href=\"#\">\n" +
-                                "                        <img class=\"am-img-thumbnail am-img-bdrs\" src=\"" + server_host + "/fileupload" + files[i] + "\"\n" +
-                                "                             alt=\"\"/>\n" +
-                                "                        <div class=\"gallery-title\">" + files[i] + "</div>\n" +
-                                "                    </a>\n" +
-                                "                </li>");
+                        $("#picture_content").append("<div class=\"col-md-2 col-sm-6\">\n" +
+                                "                            <div class=\"gallery-item\">\n" +
+                                "                                <div class=\"image\">\n" +
+                                "                                    <div class=\"overlay\">\n" +
+                                "                                        <a href=\"" + server_host + "/fileupload" + files[i] + "\"\n" +
+                                "                                           data-rel=\"lightbox\" class=\"fa fa-expand\"></a>\n" +
+                                "                                    </div>\n" +
+                                "                                    <img src=\"" + server_host + "/fileupload" + files[i] + "\" alt=\"image 2\">\n" +
+                                "                                </div>\n" +
+                                "                                <div class=\"content-gallery\"></div>\n" +
+                                "                            </div>\n" +
+                                "                        </div>");
                     }
                 }
             }

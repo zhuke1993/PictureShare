@@ -71,7 +71,15 @@
     <div class="admin-content">
         <div class="admin-content-body">
             <div class="am-cf am-padding">
-                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">内容管理</strong></div>
+                <div class="am-fl am-cf">
+                    <strong class="am-text-primary am-text-lg">内容管理</strong>
+                </div>
+                <div style="float: left" id="search_content">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input name="condition" id="condition" type="text">
+                    <input type="button" value="搜索" onclick="search()">
+                    <span id="search_result" style="color: red"></span>
+                </div>
             </div>
 
             <ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
@@ -144,6 +152,8 @@
     <script src="assets/js/amazeui.min.js"></script>
     <script src="assets/js/app.js"></script>
     <script>
+        var accessToken = sessionStorage.getItem('accessToken');
+        $("#accessToken").val(accessToken);
         $.ajax({
             url: server_host + "/pictureshare/admin/sys_report",
             data: {
@@ -200,7 +210,7 @@
                             $("#content").append("<tr>\n" +
                                     "                            <td onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"'  style=\"width: 20%\">" + json[i].userName + "</td>\n" +
                                     "                            <td onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"'  style=\"width: 20%\">" + json[i].createdOn + "</td>\n" +
-                                    "                            <td onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"' style=\"width: 20%\">" + json[i].remark + "</td>\n" +
+                                    "                            <td onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"' style=\"width: 20%\">" + json[i].remark.substr(0, 10) + "</td>\n" +
                                     "                            <td onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"' style=\"width: 20%\">" + json[i].commentDtoList.length + "</td>\n" +
                                     "                            <td  style=\"width: 20%\">" + "<button onclick='deletePicutureShare(" + json[i].id + ")' class=\"am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only\"><span class=\"am-icon-trash-o\"></span> 删除</button>" + "</td>\n" +
                                     "                        </tr>");
@@ -231,7 +241,38 @@
 
         }
 
-
+        function search() {
+            $.ajax({
+                url: server_host + "/pictureshare/search",
+                data: {
+                    condition: encodeURI($("#condition").val()),
+                    accessToken: sessionStorage.getItem("accessToken")
+                },
+                success: function (msg) {
+                    if (msg.code == '401' || msg.code == '403') {
+                        alert(msg.msg);
+                        window.location.href = 'login.html';
+                    } else if (msg.code == 'OK') {
+                        var json = msg.msg;
+                        $("#pageContent").empty();
+                        $("#total_item").text(json.length);
+                        $("#search_result").text("共搜索到：" + json.length + "条结果");
+                        $("#content").empty();
+                        $("#content").append("<tbody id=\"content\">");
+                        for (var i = 0; i < json.length; i++) {
+                            $("#content").append("<tr>\n" +
+                                    "                            <td onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"'  style=\"width: 20%\">" + json[i].userName + "</td>\n" +
+                                    "                            <td onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"'  style=\"width: 20%\">" + json[i].createdOn + "</td>\n" +
+                                    "                            <td onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"' style=\"width: 20%\">" + json[i].remark.substr(0, 10) + "</td>\n" +
+                                    "                            <td onclick='location.href=\"" + "detail.html?pictureShareId=" + json[i].id + "\"' style=\"width: 20%\">" + json[i].commentDtoList.length + "</td>\n" +
+                                    "                            <td  style=\"width: 20%\">" + "<button onclick='deletePicutureShare(" + json[i].id + ")' class=\"am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only\"><span class=\"am-icon-trash-o\"></span> 删除</button>" + "</td>\n" +
+                                    "                        </tr>");
+                        }
+                        $("#content").append("</tbody>");
+                    }
+                }
+            });
+        }
     </script>
 </div>
 </body>
