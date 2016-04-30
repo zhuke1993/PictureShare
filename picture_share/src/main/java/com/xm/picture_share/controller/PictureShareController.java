@@ -152,10 +152,9 @@ public class PictureShareController {
                     pictureFileList.add(pictureFile);
                 }
             }
-
             PictureShare pictureShare = new PictureShare();
             pictureShare.setCreatedOn(new Date());
-            pictureShare.setRemark(request.getParameter("remark"));
+            pictureShare.setRemark(URLDecoder.decode(request.getParameter("remark"), "UTF-8"));
             pictureShare.setUserId(loginUser.getId());
 
             PictureShareRequest pictureShareRequest = new PictureShareRequest(pictureShare, pictureFileList);
