@@ -4,4 +4,6 @@ import com.xm.picture_share.entity.Comment;
 
 public interface CommentService {
     void addComment(Comment comment);
+
+    void delComment(Comment comment);
 }

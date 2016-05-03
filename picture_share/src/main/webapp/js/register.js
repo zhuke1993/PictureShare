@@ -1,4 +1,4 @@
-function register() {
+function register(grantedAuthority) {
     var clientId = $("#email").val();
     var clientSecret = $("#password").val();
     var phone = $('#phone').val();
@@ -75,12 +75,16 @@ function register() {
             email: clientId,
             password: clientSecret,
             phone: phone,
-            grantedAuthority: 'administrator'
+            grantedAuthority: grantedAuthority
         },
         success: function (msg) {
             if (msg.code == 'OK') {
                 alert(msg.msg);
-                window.location.href = 'login.html';
+                if (grantedAuthority == "normal_user") {
+                    window.location.href = 'normal_login.html';
+                } else {
+                    window.location.href = 'login.html';
+                }
             } else {
                 $("#error_message").html(msg.msg);
             }

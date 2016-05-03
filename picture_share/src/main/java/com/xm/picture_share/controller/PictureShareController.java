@@ -161,12 +161,16 @@ public class PictureShareController {
             pictureShareService.addPictureShare(pictureShareRequest);
 
             responseUtil = HTTPResponseUtil._OK;
-            return "success.html";
+            if (loginUser.getGrantedAuthority().equals(GrantedAuthorityEnum.ADMIN.getValue())) {
+                return "success.html";
+            } else {
+                return "all_share.html";
+            }
             //responseUtil.write(response);
 
         } catch (Exception e) {
             responseUtil = HTTPResponseUtil._ServerError;
-            logger.error(e.getMessage());
+            logger.error("Occured an error.", e);
             //responseUtil.write(response);
             return "failed.html";
         }
@@ -209,6 +213,42 @@ public class PictureShareController {
 
             List<PictureShareDetailDto> detailList = pictureShareService.getDetailList(pageNo, pageSize);
             responseUtil = new HTTPResponseUtil(detailList);
+        } catch (Exception e) {
+            responseUtil = HTTPResponseUtil._ServerError;
+            logger.error("服务器错误", e);
+        }
+        responseUtil.write(response);
+    }
+
+
+    @RequestMapping(value = "/user_picture_share_list")
+    public void getUserPictrureShareList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HTTPResponseUtil responseUtil;
+        try {
+            String type = request.getParameter("type");
+            if (type.equals("own")) {
+                UserInfo loginUser = userInfoService.getLoginUser(request);
+                responseUtil = new HTTPResponseUtil(pictureShareService.getDetailList(loginUser.getId()));
+            } else {
+                responseUtil = new HTTPResponseUtil(pictureShareService.getDetailList(Long.parseLong(request.getParameter("userId"))));
+            }
+
+        } catch (Exception e) {
+            responseUtil = HTTPResponseUtil._ServerError;
+            logger.error("服务器错误", e);
+        }
+        responseUtil.write(response);
+    }
+
+    @RequestMapping(value = "updateAccount")
+    public void updateAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HTTPResponseUtil responseUtil;
+        try {
+            UserInfo loginUser = userInfoService.getLoginUser(request);
+            loginUser.setPassword(MD5Util.string2MD5(URLDecoder.decode(request.getParameter("password"), "UTF-8") + loginUser.getGuid()));
+            loginUser.setModifiedOn(new Date());
+            userInfoService.modifyUserInfo(loginUser);
+            responseUtil = HTTPResponseUtil._OK;
         } catch (Exception e) {
             responseUtil = HTTPResponseUtil._ServerError;
             logger.error("服务器错误", e);
@@ -309,6 +349,21 @@ public class PictureShareController {
             String condition = URLDecoder.decode(request.getParameter("condition"), "UTF-8");
             List<PictureShareDetailDto> pictureShareDetailDtos = pictureShareService.findPictureShare(condition);
             responseUtil = new HTTPResponseUtil(pictureShareDetailDtos);
+        } catch (Exception e) {
+            responseUtil = HTTPResponseUtil._ServerError;
+            logger.error("服务器错误", e);
+        }
+        responseUtil.write(response);
+    }
+
+    @RequestMapping(value = "/del_comment")
+    public void delComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HTTPResponseUtil responseUtil;
+        try {
+            Comment comment = new Comment();
+            comment.setId(Long.parseLong(request.getParameter("commentId")));
+            commentService.delComment(comment);
+            responseUtil = HTTPResponseUtil._OK;
         } catch (Exception e) {
             responseUtil = HTTPResponseUtil._ServerError;
             logger.error("服务器错误", e);

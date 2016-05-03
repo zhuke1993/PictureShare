@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>设置</title>
+    <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+    <style>
+        .header {
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 200%;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+    </style>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="js/public.js"></script>
+    <script src="js/updateAccount.js"></script>
+    <script>
+        if (sessionStorage.getItem("accessToken") == null) {
+            alert("请先登录");
+            window.location.href = "normal_login.html";
+        }
+    </script>
+</head>
+<body>
+<div class="header">
+    <div class="am-g">
+        <h1>重置账户信息</h1>
+    </div>
+    <hr/>
+</div>
+<div class="am-g">
+    <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+
+        <br>
+        <br>
+
+        <form method="post" class="am-form">
+            <div class="signin">
+                <p>密码：</p><input id='password' name='password' type="password" class="pass"/>
+                <p>重复密码：</p><input id='repassword' name='repassword' type="password" class="user"/>
+                <p>电话：</p><input id="phone" name='phone' type="text" class="user"/>
+                <br><br>
+                <div class="am-cf">
+                    <input type="button" class="am-btn am-btn-primary am-btn-sm am-fl"
+                           onclick='register("administrator")' value="确定"/>
+                </div>
+                <span id="error_message" style="color: red"></span>
+            </div>
+        </form>
+        <hr>
+        <p>夏梦@2016 重庆邮电大学, All Rights Reserved.</p>
+    </div>
+</div>
+</body>
+</html>

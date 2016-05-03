@@ -14,6 +14,8 @@ public interface PictureShareService {
 
     List<PictureShareDetailDto> getDetailList(int pageNo, int pageSize);
 
+    List<PictureShareDetailDto> getDetailList(Long useId);
+
     PictureShareDetailDto getDetail(Long pictureShareId);
 
     void deletePictureShare(Long id);

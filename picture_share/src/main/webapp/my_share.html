@@ -1,0 +1,302 @@
+<!doctype html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>我的分享</title>
+    <link href="styles/CustomerIndex.css" type="text/css" rel="stylesheet"/>
+    <link href="styles/global.css" type="text/css" rel="stylesheet"/>
+    <script language="javascript" src="script/CustomerIndex.js"></script>
+    <script language="javascript" src="script/trim.js"></script>
+    <script language="javascript" src="assets/js/jquery.min.js"></script>
+    <script src="js/public.js"></script>
+</head>
+
+<body style="filter:alpha(opacity=100)" id="totop">
+<!-- 总容器 container开 始-->
+<div id="hahah">
+    <div id="container">
+        <!-- topDIV 开始 -->
+        <!-- topDIv 结束-->
+        <!-- 内容总容器 mainDIV 开 始-->
+        <div id="main">
+            <!-- 左侧mainBannerDIV 开始 -->
+            <div id="mainBanner">
+                <!-- mainBannerTop DIV 开始 -->
+                <div id="mainBannerTop">
+                    <!--id=mainBannerTopIssue 发布框-->
+                    <div id="mainBannerTopIssue">
+                        <!--id=mainBannerTopIssuePoint 提示-->
+                        <div id="mainBannerTopIssuePoint"><span
+                                style="color: #0a6999;font-size: 20px;"><strong>添加分享</strong></span>
+                        </div>
+                        <div style="float:right;">您还可以输入<font id="counter1" style="color: red">140</font>字！
+                        </div>
+                        <div id="mainBannerTopIssueForm">
+                            <!--id="mainBannerTopIssueFrame-->
+                            <form id="pictureshareform" class="am-form" action="picture_share" method="post"
+                                  enctype="multipart/form-data">
+                                <div id="mainBannerTopIssueFrame">
+                                    <textarea name="remark" rows="4" class="Size" id="remark"
+                                              style="overflow:hidden;border:1px #0CF solid;"
+                                              onkeyup="calNum(this,counter1,0)"></textarea>
+                                </div>
+                                <!--id="mainBannerTopIssueInsert 插入链接-->
+                                <div id="mainBannerTopIssueInsert">
+                                    <!--4个小div-->
+                                </div>
+                                <!--确认发布-->
+                                <div id="mainBannerTopIssueSure">
+                                    <div id="mainBannerTopIssueSure2">
+                                        <div id="pictureContent" style="float:left; height: 80px"></div>
+                                        <input type="button" value="添加图片"
+                                               style="width: 80px; height: 30px;background-color:#3295E6; border:none;vertical-align: middle"
+                                               onclick="addPictureInput()"/>
+                                        <input type="button" value="发布"
+                                               style="width: 80px; height: 30px;background-color:#3295E6; border:none; vertical-align: middle"
+                                               onclick="submitPictureShare()"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        </form>
+                    </div>
+                    <!-- 表情DIV -->
+                </div>
+
+                <!--id="mainBannerTitle 首页-->
+                <div id="mainBannerTitle">
+                    <!--id="mainBannerTitleWord"-->
+                    <div id="mainBannerTitleWord"><b><span
+                            style="color: #0a6999;font-size: 15px;"><strong>我的分享</strong></span></b>
+                    </div>
+                </div>
+                <!--不同人的内容-->
+                <div id="shareContent">
+                    <!--个人展示-->
+
+                    <!--个人展示结束-->
+                </div>
+
+            </div>
+        </div>
+        <!-- 左侧mainBanner DIV 结束-->
+        <!-- 右侧mainRight DIV开始 -->
+        <div id="mainRight">
+            <table width="50px" border="0" cellpadding="0" cellspacing="0" bgcolor="#E9F4FA">
+                <tr>
+                    <td bgcolor="#E9F4FA">
+                        <!-- 右侧mainRightPostionFirstLine DIV 开始 -->
+                        <div id="mainRightPostionFirstLine">
+                            <!-- 右侧mainRightPostionFirstLineIcon DIV 开始 -->
+                            <div style="height:58px;">
+                                <div id="mainRightPostionFirstLineIcon">
+                                    <a href="my_share.html"><img src="images/MainRightFirstLineTitle.gif" alt=""
+                                                                 width="48" height="48" align="absmiddle" title=""
+                                                                 border="0"/></a>
+                                </div>
+                                <!-- 右侧mainRightPostionFirstLineIcon DIV 结束 -->
+                                <!-- 右侧mainRightPostionFirstLineWord1 DIV 开始 -->
+                                <div id="mainRightPostionFirstLineWord1">
+                                    &nbsp;<font color="#005DC3"><b><a href="my_share.html"
+                                                                      class="a1">
+                                    <script>
+                                        if (sessionStorage.getItem("loginUsername") == null) {
+                                            document.write("游客")
+                                        } else {
+                                            document.write(sessionStorage.getItem("loginUsername"))
+                                        }
+                                    </script>
+                                </a></b></font><br/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 右侧mainRightPostionFirstLine DIV 结束 -->
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#E9F4FA">
+                        <!-- 右侧mainRightPostionSecondLine DIV 开始 -->
+                        <div id="mainRightPostionSecondLine">
+                            <!-- 右侧mainRightPositionSecondLineContent DIV 开始 -->
+                            <div id="mainRightPositionSecondLineContent">
+                                <a href="all_share.html" class="a1"><font
+                                        style="font-size:16px;font-weight:700; color:#000;">首页</font></a><br/>
+                                <hr color="#79BDD1" zize="2" style=""/>
+                                <a href="my_share.html?type=own" class="a1"><font class="style3">我的分享</font></a>
+                                <hr class="h1">
+                                <a href="setting.html" class="a1"><font class="style3">设置</font></a>
+                                <hr class="h1">
+                            </div>
+                            <!-- 右侧mainRightPositionSecondLineContent DIV 开始 -->
+                        </div>
+                        <!-- 右侧mainRightPostionSecondLine DIV 结束 -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- 右侧mainRightDiv 结束 -->
+    </div>
+    <!-- 回复DIV 开始 -->
+    <!-- 内容总容器 mainDIV 结束-->
+
+    <!-- footer部分 -->
+
+    <!-- footer部分结束 -->
+
+</div>
+<!--总容器 container结束-->
+<p id="backtop"><a id="backtop1" href="#totop"><span></span>回到顶部</a></p>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/templatemo_misc.css">
+<link rel="stylesheet" href="css/templatemo_style.css">
+<script src="js/jquery.lightbox.js"></script>
+<script src="js/templatemo_custom.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+
+<script>
+    function addPictureInput() {
+        $("#pictureContent").append("<input style='float: left;width: 100px' type=\"file\" name=\"pictures\">");
+    }
+
+    function loadS(url) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+        document.head.appendChild(script);
+    }
+
+    function updatePictureDiv(files, n) {
+        if (files.length == 0) {
+        } else {
+            for (var i = 0; i < files.length; i++) {
+                $("#picture_content" + n).append("<div class=\"col-md-2 col-sm-6\" style='width: 130px'>\n" +
+                        "                            <div class=\"gallery-item\">\n" +
+                        "                                <div class=\"image\">\n" +
+                        "                                    <div class=\"overlay\" style=\"display: none;\">\n" +
+                        "                                        <a href=\"" + server_host + "/fileupload/" + files[i] + "\" data-rel=\"lightbox\" class=\"fa fa-expand\"></a>\n" +
+                        "                                    </div>\n" +
+                        "                                    <img src=\"" + server_host + "/fileupload/" + files[i] + "\" alt=\"image 2\" style='height: 80px; width: 80px;'>\n" +
+                        "                                </div>\n" +
+                        "                                <div class=\"content-gallery\"></div>\n" +
+                        "                            </div>\n" +
+                        "                        </div>");
+            }
+            loadS("js/templatemo_custom.js");
+        }
+    }
+    function updateCommentDiv(comments, n) {
+        if (comments.length == 0) {
+        } else {
+            for (var i = 0; i < comments.length; i++) {
+                $("#comment_content" + n).append("<span style='color: #0a6999; font-size: 10px'>" + comments[i].userName + "</span>" + "<span style='color: #4b4b4b;font-size: 10px;'>&nbsp;&nbsp;&nbsp;&nbsp;" + comments[i].createdOn + "</span>" +
+                        "<br><span style='font-size: 12px;'>" + comments[i].comment + "</span><br>");
+            }
+        }
+    }
+
+    function updateTextDiv(json) {
+        for (var i = 0; i < json.length; i++) {
+            $("#shareContent").append("<div id=\"mainBannerContent\">" +
+                    "<div class=\"stateShow\">\n" +
+                    "                        <div class=\"stateShowWord\">\n" +
+                    "                            <table width=\"450\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"stateTable\">\n" +
+                    "                                <tr>\n" +
+                    "                                    <td width=\"380\">\n" +
+                    "                                       <a href=\"users_share.html?type=user&userId=" + json[i].userId + "\">" + json[i].userName + "</a>\n" + "<span style='font-size: 10px; color: inherit'>" + json[i].createdOn + "</span>" +
+                    " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                    "                                       <div onclick='addComment(" + i + ")' style='float: right'><img src=\"images/1.gif\" align=\"absmiddle\" style=\"border:none;\"/><span style='font-size: 12px;color: inherit'>添加评论</span></div>\n" +
+                    "                                        <p>" + json[i].remark + "</p>\n" +
+                    "                                    </td>\n" +
+                    "                                </tr>\n" +
+                    "                            </table>\n" +
+                    "                        </div>\n" +
+                    "                        <ul>\n" +
+                    "                            <div id=\"picture_content" + i + "\" class=\"container-fluid\" align=\"center\">\n" +
+
+                    "                            </div>\n" +
+                    "                            <textarea id='comment" + i + "' style=\"overflow:hidden;border:1px #0CF solid; width: 500px; font-size: 15px;\" rows='2'></textarea>" +
+                    "                            <div id=\"comment_content" + i + "\" class=\"container-fluid\" align=\"left\">\n" +
+
+                    "                            </div>\n" +
+                    "                        </ul>\n" +
+                    "\n" +
+                    "<input type='hidden' id='pictureShareId" + i + "' value=" + json[i].id + ">" +
+                    "                    </div></div>"
+            )
+            ;
+            updatePictureDiv(json[i].fileURLList, i);
+            updateCommentDiv(json[i].commentDtoList, i);
+        }
+        $("#shareContent").append("<div id=\"footer\">\n" +
+                "        <!-- footer网站链接部分 -->\n" +
+                "        <!-- footer网站链接部分结束 -->\n" +
+                "        <!-- footer网站版权信息 -->\n" +
+                "        <div id=\"footerCopy\">\n" +
+                "            夏梦@重庆邮电大学, All Rights Reserved.\n" +
+                "        </div>\n" +
+                "        <!-- footer网站版权信息结束 -->\n" +
+                "    </div>");
+    }
+
+    $.ajax({
+        url: server_host + "/pictureshare/user_picture_share_list",
+        data: {
+            accessToken: sessionStorage.getItem("accessToken"),
+            type: "own"
+        },
+        success: function (msg) {
+            if (msg.code == '401' || msg.code == '403') {
+                alert(msg.msg);
+                window.location.href = 'login.html';
+            } else if (msg.code == 'OK') {
+                var json = msg.msg;
+                updateTextDiv(json);
+            }
+        }
+    });
+
+    function addComment(i) {
+        if (sessionStorage.getItem("accessToken") == null || sessionStorage.getItem("accessToken") == '') {
+            alert("请先登陆");
+            window.location.href = 'normal_login.html';
+        } else if ($("#comment" + i).val() == null || $("#comment" + i).val() == "" || $("#comment" + i).val() == 'undefined') {
+            alert("请输入有效信息")
+        } else {
+            $.ajax({
+                url: server_host + "/pictureshare/comment",
+                data: {
+                    accessToken: sessionStorage.getItem("accessToken"),
+                    comment: encodeURI($("#comment" + i).val()),
+                    pictureShareId: $("#pictureShareId" + i).val()
+                },
+                success: function (msg) {
+                    if (msg.code == '401' || msg.code == '403') {
+                        alert(msg.msg);
+                        window.location.href = 'login.html';
+                    } else if (msg.code == 'OK') {
+                        var json = msg.msg;
+                        alert(msg.msg);
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+    }
+    function submitPictureShare() {
+        var accessToken = sessionStorage.getItem('accessToken');
+        if (accessToken == null) {
+            alert("请先登录");
+            window.location.href = 'normal_login.html';
+        } else {
+            $("#pictureshareform").attr('action', server_host + "/pictureshare/picture_share?accessToken=" + accessToken);
+            if ($("#remark").val() == null || $("#remark").val() == "") {
+                alert("请输入有效信息");
+            } else {
+                $("#pictureshareform").submit();
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

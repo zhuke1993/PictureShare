@@ -17,4 +17,9 @@ public class CommentServiceImpl implements CommentService {
     public void addComment(Comment comment) {
         hibernateTemplate.save(comment);
     }
+
+    @Transactional
+    public void delComment(Comment comment) {
+        hibernateTemplate.delete(comment);
+    }
 }

@@ -63,7 +63,7 @@ public class PictureShareServiceImpl implements PictureShareService {
             List<Comment> commentList = (List<Comment>) hibernateTemplate.find("from Comment c where c.pictureShareId = ?", pictureShare.getId());
             for (int k = 0; k < commentList.size(); k++) {
                 Comment comment = commentList.get(k);
-                CommentDto commentDto = new CommentDto(DateFormatUtil.formatDate(comment.getCreatedOn()), comment.getComment(), comment.getCommentUserId(), hibernateTemplate.get(UserInfo.class, comment.getCommentUserId()).getUserName());
+                CommentDto commentDto = new CommentDto(comment.getId(), DateFormatUtil.formatDate(comment.getCreatedOn()), comment.getComment(), comment.getCommentUserId(), hibernateTemplate.get(UserInfo.class, comment.getCommentUserId()).getUserName());
                 commentDtoList.add(commentDto);
             }
             pictureShareDetailDto.setCommentDtoList(commentDtoList);
@@ -71,6 +71,15 @@ public class PictureShareServiceImpl implements PictureShareService {
             list.add(pictureShareDetailDto);
         }
 
+        return list;
+    }
+
+    public List<PictureShareDetailDto> getDetailList(Long userId) {
+        List<PictureShare> plist = (List<PictureShare>) hibernateTemplate.find("from PictureShare p where userId = ?", userId);
+        List<PictureShareDetailDto> list = new ArrayList<PictureShareDetailDto>();
+        for (int i = 0; i < plist.size(); i++) {
+            list.add(getDetail(plist.get(i).getId()));
+        }
         return list;
     }
 
@@ -97,7 +106,7 @@ public class PictureShareServiceImpl implements PictureShareService {
         List<Comment> commentList = (List<Comment>) hibernateTemplate.find("from Comment c where c.pictureShareId = ?", pictureShare.getId());
         for (int k = 0; k < commentList.size(); k++) {
             Comment comment = commentList.get(k);
-            CommentDto commentDto = new CommentDto(DateFormatUtil.formatDate(comment.getCreatedOn()), comment.getComment(), comment.getCommentUserId(), hibernateTemplate.get(UserInfo.class, comment.getCommentUserId()).getUserName());
+            CommentDto commentDto = new CommentDto(comment.getId(), DateFormatUtil.formatDate(comment.getCreatedOn()), comment.getComment(), comment.getCommentUserId(), hibernateTemplate.get(UserInfo.class, comment.getCommentUserId()).getUserName());
             commentDtoList.add(commentDto);
         }
         pictureShareDetailDto.setCommentDtoList(commentDtoList);

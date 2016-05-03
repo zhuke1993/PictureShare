@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>图片分享-用户登陆</title>
+    <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+    <style>
+        .header {
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 200%;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+    </style>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="js/public.js"></script>
+    <script>
+        function login() {
+            $.ajax({
+                url: server_host + "/pictureshare/login",
+                data: {
+                    username: $("#code").val(),
+                    password: $("#password").val()
+                },
+                success: function (msg) {
+                    if (msg.code == 'OK') {
+                        window.sessionStorage.setItem("accessToken", msg.msg);
+                        window.sessionStorage.setItem("loginUsername", $("#code").val());
+                        window.location.href = 'all_share.html';
+                    } else {
+                        $("#error_message").html(msg.msg);
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="header">
+    <div class="am-g">
+        <h1>图片分享-后台管理系统登陆</h1>
+    </div>
+    <hr/>
+</div>
+<div class="am-g">
+    <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+
+        <br>
+        <br>
+
+        <form method="post" class="am-form">
+            <label>用户名:</label>
+            <input type="text" code="" id="code" value="">
+            <br>
+            <label for="password">密码:</label>
+            <input type="password" code="" id="password" value="">
+            <br>
+            <br/>
+            <div class="am-cf">
+                <input onclick="login()" type="button" code="" value="登 录"
+                       class="am-btn am-btn-primary am-btn-sm am-fl">&nbsp;
+                <input onclick="window.location.href='register.html'" type="button" code="" value="注 册"
+                       class="am-btn am-btn-primary am-btn-sm am-fl">
+            </div>
+            <span id="error_message" style="color: red"></span>
+        </form>
+        <hr>
+        <p>夏梦@2016 重庆邮电大学, All Rights Reserved.</p>
+    </div>
+</div>
+</body>
+</html>

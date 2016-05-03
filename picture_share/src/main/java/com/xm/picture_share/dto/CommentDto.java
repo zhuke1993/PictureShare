@@ -1,12 +1,14 @@
 package com.xm.picture_share.dto;
 
 public class CommentDto {
+    private Long id;
     private String createdOn;
     private String comment;
     private Long commentUserId;
     private String userName;
 
-    public CommentDto(String createdOn, String comment, Long userId, String userName) {
+    public CommentDto(Long id, String createdOn, String comment, Long userId, String userName) {
+        this.id = id;
         this.createdOn = createdOn;
         this.comment = comment;
         this.commentUserId = userId;
