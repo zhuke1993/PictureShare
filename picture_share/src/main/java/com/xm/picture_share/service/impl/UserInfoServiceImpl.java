@@ -113,4 +113,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
     }
 
+
+    public List<UserInfo> findUser(String userName) {
+        return (List<UserInfo>) hibernateTemplate.find("from UserInfo u where u.userName like '%" + userName + "%'");
+    }
+
 }

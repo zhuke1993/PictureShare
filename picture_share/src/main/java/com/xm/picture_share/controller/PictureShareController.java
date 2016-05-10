@@ -372,6 +372,25 @@ public class PictureShareController {
     }
 
 
+    @RequestMapping(value = "/modify_pictureshare")
+    public void modifyPictureShare(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HTTPResponseUtil responseUtil;
+        try {
+            PictureShare pictureShare = hibernateTemplate.get(PictureShare.class, Long.parseLong(request.getParameter("pictureShareId")));
+            pictureShare.setId(Long.parseLong(request.getParameter("pictureShareId")));
+            pictureShare.setRemark(URLDecoder.decode(request.getParameter("remark"), "UTF-8"));
+            pictureShare.setModifiedOn(new Date());
+            pictureShareService.modifyPictureShare(pictureShare);
+
+            responseUtil = HTTPResponseUtil._OK;
+        } catch (Exception e) {
+            responseUtil = HTTPResponseUtil._ServerError;
+            logger.error("服务器错误", e);
+        }
+        responseUtil.write(response);
+    }
+
+
     private String pictureFileNameFactory(Long userId) {
         StringBuilder sb = new StringBuilder();
         sb.append(userId);

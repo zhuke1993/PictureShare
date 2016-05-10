@@ -91,6 +91,7 @@
 
             <hr>
             <div class="am-u-sm-12 am-u-sm-centered">
+                <input type="hidden" id="pictureShareId">
                 <h4>用户名</h4>
                 <p id="username"></p>
                 <hr>
@@ -98,7 +99,8 @@
                 <time id="createdOn"></time>
                 <hr>
                 <h4>详情</h4>
-                <p id="remark"></p>
+                <input id="remark"/>
+                <input type="button" onclick="modifyPictureShare()" value="更改">
                 <hr>
                 <h4>图片列表</h4>
                 <ul class="am-avg-sm-2 am-avg-md-4 am-avg-lg-6 am-margin gallery-list">
@@ -162,9 +164,11 @@
                 window.location.href = 'login.html';
             } else if (msg.code == 'OK') {
                 var json = msg.msg;
+
+                $("#pictureShareId").val(json.id);
                 $("#username").text(json.userName);
                 $("#createdOn").text(json.createdOn);
-                $("#remark").text(json.remark);
+                $("#remark").val(json.remark);
 
                 var comments = json.commentDtoList;
                 if (comments.length == 0) {
@@ -223,6 +227,27 @@
             }
         });
     }
+
+    function modifyPictureShare() {
+        $.ajax({
+            url: server_host + "/pictureshare/modify_pictureshare",
+            data: {
+                accessToken: sessionStorage.getItem("accessToken"),
+                remark: encodeURI($("#remark").val()),
+                pictureShareId: $("#pictureShareId").val()
+            },
+            success: function (msg) {
+                if (msg.code == '401' || msg.code == '403') {
+                    alert(msg.msg);
+                    window.location.href = 'login.html';
+                } else if (msg.code == 'OK') {
+                    alert(msg.msg);
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
 
 </script>
 

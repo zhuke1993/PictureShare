@@ -21,4 +21,6 @@ public interface PictureShareService {
     void deletePictureShare(Long id);
 
     List<PictureShareDetailDto> findPictureShare(String str);
+
+    void modifyPictureShare(PictureShare pictureShare);
 }

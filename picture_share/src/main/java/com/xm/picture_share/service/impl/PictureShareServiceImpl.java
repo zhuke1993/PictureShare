@@ -134,11 +134,22 @@ public class PictureShareServiceImpl implements PictureShareService {
     public List<PictureShareDetailDto> findPictureShare(String str) {
         List<PictureShareDetailDto> dtoList = new ArrayList<PictureShareDetailDto>();
 
+        List<UserInfo> userInfoList = (List<UserInfo>) hibernateTemplate.find("from UserInfo u where u.userName like '%" + str + "%'");
+
+        for (int i = 0; i < userInfoList.size(); i++) {
+            dtoList.addAll(getDetailList(userInfoList.get(i).getId()));
+        }
+
         List<PictureShare> list = (List<PictureShare>) hibernateTemplate.find("from PictureShare p where p.remark like '%" + str + "%'", null);
         for (int i = 0; i < list.size(); i++) {
             PictureShareDetailDto detail = getDetail(list.get(i).getId());
             dtoList.add(detail);
         }
         return dtoList;
+    }
+
+    @Transactional
+    public void modifyPictureShare(PictureShare pictureShare) {
+        hibernateTemplate.update(pictureShare);
     }
 }
